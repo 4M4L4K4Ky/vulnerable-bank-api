@@ -12,14 +12,14 @@
 > laboratorios de seguridad, análisis estático/dinámico SAST/DAST, prácticas de pentesting
 > en entornos controlados. **No desplegar en producción ni reutilizar como base real.**
 
----
+|---|---|---|---|
 
 <div align="center">
   <h2>Banco vulnerable con +20 fallos de seguridad reales</h2>
   <p><strong>17 endpoints · 22 CWEs · Severidades del 1 al 8 · 5 clases explotables</strong></p>
 </div>
 
----
+|---|---|---|---|
 
 ## Objetivo academico
 
@@ -33,7 +33,7 @@ Este repositorio sirve como _playground_ para equipos de seguridad y desarrollad
 ## Stack tecnologico
 
 | Componente | Version | Proposito |
-|---|---|---|
+|---|---|---|---||---|---|---|---||---|---|---|---||
 | Java | 21 | Plataforma base |
 | Spring Boot | 3.3.x | Framework REST (sin Spring Security) |
 | Maven | 3.9+ | Build y dependencias |
@@ -84,7 +84,7 @@ src/main/java/com/amalakaky/vuln/
 ### Originales
 
 | Endpoint | Vulnerabilidad | CWE | OWASP 2025 |
-|---|---|---|---|---|
+|---|---|---|---|
 | `GET /api/users/balance?username=...` | SQLi + Credenciales hardcodeadas | CWE-89, CWE-798 | A05 Injection, A04 Crypto Failures |
 | `POST /api/crypto/hash?password=...` | Hash debil (MD5 sin salt) | CWE-327 | A04 Cryptographic Failures |
 | `GET /api/system/download?filename=...` | Path Traversal | CWE-22 | A01 Broken Access Control |
@@ -94,7 +94,7 @@ src/main/java/com/amalakaky/vuln/
 ### OWASP Controller — Cobertura Top 10 2025
 
 | Endpoint | CWE | Descripcion | Sev. | OWASP 2025 |
-|---|---|---|---|---|
+|---|---|---|---||---|---|---|---||---|---|---|---||---|---|---|---||---|---|---|---||
 | `GET /api/owasp/xss/comment?text=...` | CWE-79 | Reflected XSS — script sin escapar | 3 | A05 Injection |
 | `POST /api/owasp/csrf/transfer` | CWE-352 | Sin token anti-CSRF ni validacion de origen | 4 | A01 Broken Access Control |
 | `GET /api/owasp/broken-acl/admin/profile` | CWE-862 | Broken Access Control — acceso sin autenticar | 5 | A01 Broken Access Control |
@@ -112,7 +112,7 @@ src/main/java/com/amalakaky/vuln/
 ### Severidad baja (INFO)
 
 | Endpoint | CWE | Descripcion | Sev. | OWASP 2025 |
-|---|---|---|---|---|
+|---|---|---|---||---|---|---|---||---|---|---|---||---|---|---|---||---|---|---|---||
 | `GET /api/owasp/debug/error-details?filepath=...` | CWE-209 | Error messages con rutas internas y trazas | 1 | A10 Mishandling of Exceptional Conditions |
 | `POST /api/owasp/log/inject?message=...` | CWE-117 | Log Injection — input sin sanitizar | 1 | A09 Logging Failures |
 | `GET /api/owasp/debug/security-config` | CWE-547 | Constantes de seguridad hardcodeadas | 1 | A02 Security Misconfiguration |
@@ -121,7 +121,7 @@ src/main/java/com/amalakaky/vuln/
 ### Cobertura OWASP Top 10 2025
 
 | Categoria | OWASP 2025 | Vulnerabilidades implementadas | Cobertura |
-|---|---|---|---|
+|---|---|---|---||---|---|---|---||---|---|---|---||---|---|---|---||
 | Broken Access Control | A01 | Path Traversal, SSRF, CSRF, Sensitive Data Exposure, Broken ACL | 5 |
 | Security Misconfiguration | A02 | Credenciales en log, Hardcoded Constants, Error Messages | 3 |
 | Software Supply Chain Failures | A03 | Unmaintained Dependencies Info | 1 |
@@ -150,7 +150,7 @@ pie title Distribucion de vulnerabilidades por severidad
 `BadPracticesController` incluye anti-patrones clasicos de forma intencional:
 
 | Anti-patron | Descripcion |
-|---|---|
+|---|---|---|---||---|---|---|---||
 | `if` encadenados (10+ niveles) | Logica imposible de mantener |
 | `return` tempranos multiples | Flujo de control caotico |
 | Numeros magicos | Constantes sin nombre esparcidas |
@@ -222,7 +222,7 @@ curl "http://localhost:8080/api/owasp/debug/security-config"
 curl "http://localhost:8080/api/owasp/debug/dependencies"
 ```
 
----
+|---|---|---|---|
 
 > **Proyecto orientado a docencia en ciberseguridad.**
 > No desplegar en produccion ni reutilizar este codigo como base de sistemas reales.
