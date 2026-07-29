@@ -3,9 +3,9 @@
 [![Java](https://img.shields.io/badge/Java-21-ED8B00?logo=openjdk)](https://www.oracle.com/java/)
 [![Spring Boot](https://img.shields.io/badge/Spring_Boot-3-6DB33F?logo=springboot)](https://spring.io/projects/spring-boot)
 [![Maven](https://img.shields.io/badge/Maven-C71A36?logo=apachemaven)](https://maven.apache.org/)
-[![OWASP Top 10](https://img.shields.io/badge/OWASP_Top_10-2021-000000?logo=owasp)](https://owasp.org/Top10/)
+[![OWASP Top 10](https://img.shields.io/badge/OWASP_Top_10-2025-000000?logo=owasp)](https://owasp.org/Top10/2025/en/)
 [![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
-[![CWE Coverage](https://img.shields.io/badge/CWEs-22%20implemented-blueviolet)](#vulnerabilidades-implementadas)
+[![CWE Coverage](https://img.shields.io/badge/CWEs-22%20implementadas-blueviolet)](#vulnerabilidades-implementadas)
 
 > [!CAUTION]
 > Este proyecto es **intencionalmente inseguro**. Diseñado exclusivamente para fines educativos:
@@ -25,7 +25,7 @@
 
 Este repositorio sirve como _playground_ para equipos de seguridad y desarrolladores que quieran:
 
-* Identificar vulnerabilidades **OWASP Top 10 (2021)** en codigo realista
+* Identificar vulnerabilidades **OWASP Top 10 (2025)** en codigo realista
 * Practicar **explotacion controlada** y validacion de hallazgos
 * Documentar impacto, riesgo y recomendaciones de mitigacion
 * Probar herramientas **SAST/DAST** (SonarQube, Checkmarx, ZAP, Burp, etc.)
@@ -83,42 +83,55 @@ src/main/java/com/amalakaky/vuln/
 
 ### Originales
 
-| Endpoint | Vulnerabilidad | CWE | Impacto |
-|---|---|---|---|
-| `GET /api/users/balance?username=...` | SQLi + Credenciales hardcodeadas | CWE-89, CWE-798 | Alto |
-| `POST /api/crypto/hash?password=...` | Hash debil (MD5 sin salt) | CWE-327 | Medio |
-| `GET /api/system/download?filename=...` | Path Traversal | CWE-22 | Alto |
-| `POST /api/network/ping?ip=...` | OS Command Injection | CWE-78 | Critico |
-| `GET /api/system/risk-score?...` | Anti-patrones (codigo espagueti) | N/A | Bajo |
+| Endpoint | Vulnerabilidad | CWE | OWASP 2025 |
+|---|---|---|---|---|
+| `GET /api/users/balance?username=...` | SQLi + Credenciales hardcodeadas | CWE-89, CWE-798 | A05 Injection, A04 Crypto Failures |
+| `POST /api/crypto/hash?password=...` | Hash debil (MD5 sin salt) | CWE-327 | A04 Cryptographic Failures |
+| `GET /api/system/download?filename=...` | Path Traversal | CWE-22 | A01 Broken Access Control |
+| `POST /api/network/ping?ip=...` | OS Command Injection | CWE-78 | A05 Injection |
+| `GET /api/system/risk-score?...` | Anti-patrones (codigo espagueti) | N/A | A10 Mishandling of Exceptional Conditions |
 
-### OWASP Controller — Cobertura Top 10 2021
+### OWASP Controller — Cobertura Top 10 2025
 
-| Endpoint | CWE | Descripcion | Severidad |
-|---|---|---|---|
-| `GET /api/owasp/xss/comment?text=...` | CWE-79 | Reflected XSS — script sin escapar | 3 |
-| `POST /api/owasp/csrf/transfer` | CWE-352 | Sin token anti-CSRF ni validacion de origen | 4 |
-| `GET /api/owasp/broken-acl/admin/profile` | CWE-862 | Broken Access Control — acceso sin autenticar | 5 |
-| `GET /api/owasp/sensitive-data/users` | CWE-200 | Expone datos sensibles de usuarios reales | 2 |
-| `POST /api/owasp/logging/credentials` | CWE-532 | Credenciales en log en texto plano | 3 |
-| `POST /api/owasp/ssrf/fetch?url=...` | CWE-918 | SSRF — acceso a metadatos internos | 6 |
-| `POST /api/owasp/deserialize` | CWE-502 | Insecure Deserialization | 8 |
-| `POST /api/owasp/upload/malicious` | CWE-434 | Subida sin restriccion de tipo/contenido | 7 |
-| `POST /api/owasp/xxe/parse` | CWE-611 | Procesamiento XML con entradas externas | 7 |
-| `GET /api/owasp/rate-limit/loan-check` | CWE-400 | Sin rate limiting — busqueda masiva | 2 |
-| `POST /api/owasp/jwt/weak-secret` | CWE-287 | JWT con clave HMAC debil `"secret"` | 6 |
-| `GET /api/owasp/weak-crypto/encrypt?data=...` | CWE-326 | DES/ECB — cifrado roto | 5 |
-| `GET /api/owasp/open-redirect?url=...` | CWE-601 | Open Redirect sin validacion | 4 |
+| Endpoint | CWE | Descripcion | Sev. | OWASP 2025 |
+|---|---|---|---|---|
+| `GET /api/owasp/xss/comment?text=...` | CWE-79 | Reflected XSS — script sin escapar | 3 | A05 Injection |
+| `POST /api/owasp/csrf/transfer` | CWE-352 | Sin token anti-CSRF ni validacion de origen | 4 | A01 Broken Access Control |
+| `GET /api/owasp/broken-acl/admin/profile` | CWE-862 | Broken Access Control — acceso sin autenticar | 5 | A01 Broken Access Control |
+| `GET /api/owasp/sensitive-data/users` | CWE-200 | Expone datos sensibles de usuarios reales | 2 | A01 Broken Access Control |
+| `POST /api/owasp/logging/credentials` | CWE-532 | Credenciales en log en texto plano | 3 | A02 Security Misconfiguration / A09 Logging Failures |
+| `POST /api/owasp/ssrf/fetch?url=...` | CWE-918 | SSRF — acceso a metadatos internos | 6 | A01 Broken Access Control |
+| `POST /api/owasp/deserialize` | CWE-502 | Insecure Deserialization | 8 | A06 Insecure Design |
+| `POST /api/owasp/upload/malicious` | CWE-434 | Subida sin restriccion de tipo/contenido | 7 | A06 Insecure Design |
+| `POST /api/owasp/xxe/parse` | CWE-611 | Procesamiento XML con entradas externas | 7 | A06 Insecure Design |
+| `GET /api/owasp/rate-limit/loan-check` | CWE-400 | Sin rate limiting — busqueda masiva | 2 | A06 Insecure Design |
+| `POST /api/owasp/jwt/weak-secret` | CWE-287 | JWT con clave HMAC debil `"secret"` | 6 | A07 Authentication Failures |
+| `GET /api/owasp/weak-crypto/encrypt?data=...` | CWE-326 | DES/ECB — cifrado roto | 5 | A04 Cryptographic Failures |
+| `GET /api/owasp/open-redirect?url=...` | CWE-601 | Open Redirect sin validacion | 4 | A08 Software/Data Integrity Failures |
 
 ### Severidad baja (INFO)
 
-| Endpoint | CWE | Descripcion | Severidad |
-|---|---|---|---|
-| `GET /api/owasp/debug/error-details?filepath=...` | CWE-209 | Error messages con rutas internas y trazas | 1 |
-| `POST /api/owasp/log/inject?message=...` | CWE-117 | Log Injection — input sin sanitizar | 1 |
-| `GET /api/owasp/debug/security-config` | CWE-547 | Constantes de seguridad hardcodeadas | 1 |
-| `GET /api/owasp/debug/dependencies` | CWE-1104 | Version de dependencias con CVEs conocidos | 1 |
+| Endpoint | CWE | Descripcion | Sev. | OWASP 2025 |
+|---|---|---|---|---|
+| `GET /api/owasp/debug/error-details?filepath=...` | CWE-209 | Error messages con rutas internas y trazas | 1 | A10 Mishandling of Exceptional Conditions |
+| `POST /api/owasp/log/inject?message=...` | CWE-117 | Log Injection — input sin sanitizar | 1 | A09 Logging Failures |
+| `GET /api/owasp/debug/security-config` | CWE-547 | Constantes de seguridad hardcodeadas | 1 | A02 Security Misconfiguration |
+| `GET /api/owasp/debug/dependencies` | CWE-1104 | Version de dependencias con CVEs conocidos | 1 | A03 Software Supply Chain Failures |
 
-### Resumen de cobertura
+### Cobertura OWASP Top 10 2025
+
+| Categoria | OWASP 2025 | Vulnerabilidades implementadas | Cobertura |
+|---|---|---|---|
+| Broken Access Control | A01 | Path Traversal, SSRF, CSRF, Sensitive Data Exposure, Broken ACL | 5 |
+| Security Misconfiguration | A02 | Credenciales en log, Hardcoded Constants, Error Messages | 3 |
+| Software Supply Chain Failures | A03 | Unmaintained Dependencies Info | 1 |
+| Cryptographic Failures | A04 | MD5 sin salt, DES/ECB, Hardcoded Credentials | 3 |
+| Injection | A05 | SQLi, OS Command Injection, XSS, Log Injection | 4 |
+| Insecure Design | A06 | Insecure Deserialization, File Upload, XXE, Missing Rate Limit | 4 |
+| Authentication Failures | A07 | JWT con clave debil | 1 |
+| Software/Data Integrity Failures | A08 | Open Redirect | 1 |
+| Logging & Alerting Failures | A09 | Credenciales en log, Log Injection | 2 |
+| Mishandling of Exceptional Conditions | A10 | Error messages, Anti-patrones (BadPracticesController) | 2 |
 
 ```mermaid
 quadrantChart
