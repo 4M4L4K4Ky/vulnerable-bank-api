@@ -52,17 +52,17 @@ Estas malas practicas se aplican deliberadamente para generar hallazgos:
 ## Arquitectura
 
 ```mermaid
-graph TB
-    A[Cliente HTTP] --> B[Spring Boot 3<br/>Sin Seguridad]
-    B --> C[UserController<br/>SQLi + Creds hardcodeadas]
-    B --> D[CryptoController<br/>MD5 sin salt]
-    B --> E[SystemController<br/>Path Traversal]
-    B --> F[NetworkController<br/>OS Command Injection]
-    B --> G[BadPracticesController<br/>Anti-patrones]
-    B --> H[OwaspController<br/>13 vulnerabilidades OWASP]
-    C --> I[(MySQL<br/>JDBC Statement)]
-    F --> J[Runtime.exec()<br/>Comandos SO]
-    H --> K[RestTemplate SSRF<br/>XXE · Deserializacion<br/>File Upload · JWT debil]
+graph TD
+    A[Cliente HTTP] --> B[Spring Boot 3]
+    B --> C[UserController]
+    B --> D[CryptoController]
+    B --> E[SystemController]
+    B --> F[NetworkController]
+    B --> G[BadPracticesController]
+    B --> H[OwaspController]
+    C --> I[(MySQL / JDBC Statement)]
+    F --> J[Runtime.exec]
+    H --> K[13 endpoints OWASP Top 10]
 ```
 
 ## Estructura del proyecto
@@ -134,34 +134,15 @@ src/main/java/com/amalakaky/vuln/
 | Mishandling of Exceptional Conditions | A10 | Error messages, Anti-patrones (BadPracticesController) | 2 |
 
 ```mermaid
-quadrantChart
-    title Severidad vs Tipo
-    x-axis Bajo Impacto --> Alto Impacto
-    y-axis Baja Probabilidad --> Alta Probabilidad
-    quadrant-1 Critico (Priorizar)
-    quadrant-2 Alto
-    quadrant-3 Medio
-    quadrant-4 Info / Bajo
-    OS Command Injection: [0.85, 0.90]
-    Insecure Deserialization: [0.80, 0.75]
-    XXE: [0.75, 0.70]
-    File Upload: [0.80, 0.65]
-    JWT Weak Secret: [0.70, 0.60]
-    SSRF: [0.65, 0.55]
-    Path Traversal: [0.75, 0.50]
-    Broken ACL: [0.60, 0.65]
-    Weak Crypto: [0.55, 0.60]
-    Open Redirect: [0.40, 0.70]
-    SQL Injection: [0.90, 0.85]
-    XSS: [0.30, 0.80]
-    CSRF: [0.35, 0.60]
-    Sensitive Data: [0.25, 0.40]
-    Logging Creds: [0.20, 0.35]
-    Rate Limiting: [0.15, 0.25]
-    Log Injection: [0.10, 0.20]
-    Error Details: [0.05, 0.30]
-    Hardcoded Config: [0.08, 0.15]
-    Dependencies Info: [0.03, 0.10]
+pie title Distribucion de vulnerabilidades por severidad
+    "Severidad 8 (Critico)" : 1
+    "Severidad 7 (Alto)" : 2
+    "Severidad 6 (Alto)" : 2
+    "Severidad 5 (Medio)" : 2
+    "Severidad 4 (Medio)" : 2
+    "Severidad 3 (Bajo)" : 2
+    "Severidad 2 (Bajo)" : 2
+    "Severidad 1 (Info)" : 4
 ```
 
 ## Clase de malas practicas
