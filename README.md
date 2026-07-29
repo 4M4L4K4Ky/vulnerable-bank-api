@@ -160,7 +160,7 @@ pie title Distribucion de vulnerabilidades por severidad
 ## Ejecucion local
 
 ```bash
-cd "C:\Users\skull\IdeaProjects\vulnerable-bank-api"
+cd "C:\vulnerable-bank-api"
 mvn spring-boot:run
 ```
 
