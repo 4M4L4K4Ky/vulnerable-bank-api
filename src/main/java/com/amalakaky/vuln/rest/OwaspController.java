@@ -277,4 +277,78 @@ public class OwaspController {
         }
         return resp;
     }
+
+    // ============================================================
+    // CWE-209: Information Exposure Through Error Messages (A05: Security Misconfiguration)
+    // Severity: 1 (INFO)
+    // Las trazas de error internas (rutas de archivos, stacks internos)
+    // se devuelven al usuario, filtrando información del servidor.
+    // ============================================================
+    @GetMapping("/api/owasp/debug/error-details")
+    public Map<String, String> errorDetails(@RequestParam(defaultValue = "/etc/passwd") String filepath) {
+        Map<String, String> resp = new HashMap<>();
+        try {
+            java.nio.file.Files.readString(java.nio.file.Path.of(filepath));
+        } catch (Exception e) {
+            resp.put("error", "No se pudo leer: " + filepath);
+            resp.put("internalPath", e.getStackTrace()[0].toString());
+            resp.put("exceptionType", e.getClass().getName());
+        }
+        return resp;
+    }
+
+    // ============================================================
+    // CWE-117: Improper Output Neutralization for Logs (A09: Logging Failures)
+    // Severity: 1 (INFO)
+    // Permite inyectar entradas falsas en los logs del servidor ya que
+    // el input del usuario se incluye sin sanitizar en las trazas.
+    // ============================================================
+    @PostMapping("/api/owasp/log/inject")
+    public Map<String, String> logInject(@RequestParam String message) {
+        LOG.info("[AUDIT] Accion realizada por usuario: " + message);
+        Map<String, String> resp = new HashMap<>();
+        resp.put("logged", message);
+        return resp;
+    }
+
+    // ============================================================
+    // CWE-547: Use of Hard-coded, Security-relevant Constants (A05: Security Misconfiguration)
+    // Severity: 1 (INFO)
+    // Constantes de seguridad hardcodeadas que deberían ser configurables.
+    // ============================================================
+    private static final int MAX_LOGIN_ATTEMPTS = 3;
+    private static final int SESSION_TIMEOUT_MINUTES = 30;
+    private static final String DEFAULT_ADMIN_PASSWORD = "admin";
+    private static final String API_VERSION = "1.0";
+    private static final int TOKEN_LENGTH = 6;
+
+    @GetMapping("/api/owasp/debug/security-config")
+    public Map<String, Object> securityConfig() {
+        Map<String, Object> config = new HashMap<>();
+        config.put("maxLoginAttempts", MAX_LOGIN_ATTEMPTS);
+        config.put("sessionTimeoutMinutes", SESSION_TIMEOUT_MINUTES);
+        config.put("defaultAdminPassword", DEFAULT_ADMIN_PASSWORD);
+        config.put("apiVersion", API_VERSION);
+        config.put("tokenLength", TOKEN_LENGTH);
+        config.put("algorithm", "DES");
+        config.put("hashType", "MD5");
+        config.put("salt", "static-salt-value");
+        return config;
+    }
+
+    // ============================================================
+    // CWE-1104: Use of Unmaintained Third-Party Components (A06: Vulnerable Components)
+    // Severity: 1 (INFO)
+    // Expone versiones de dependencias con vulnerabilidades conocidas.
+    // ============================================================
+    @GetMapping("/api/owasp/debug/dependencies")
+    public Map<String, String> dependencies() {
+        Map<String, String> deps = new HashMap<>();
+        deps.put("spring-boot", "3.3.2");
+        deps.put("mysql-connector", "unknown (runtime)");
+        deps.put("java-version", System.getProperty("java.version"));
+        deps.put("known-vulnerabilities", "CVE-2024-xxxxx (no actualizado)");
+        deps.put("log4j", "2.x (no parcheado)");
+        return deps;
+    }
 }
